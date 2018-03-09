@@ -10,23 +10,23 @@ int D1_var =         1; // - Reserved for Serial Tx?
 int DinSpeed =       2; // Speed sensor (INT0)
 int D3_var =         3; // Not used (INT1, PWM)
 int DinBeam =        4; // Beam (stalk)
-int DoutFlashLeft =  5; // Flasher, Left (also PWM)
-int DoutFlashRight = 6; // Flasher, Right (also PWM)
+int DinHead =        5; // Head light (also PWM)
+int D6_var =         6; // Not used (PWM)
 int DinDrive =       7; // Gear selector, Drive
 int DinReverse =     8; // Gear selector, Reverse
-int DinFlashLeft =   9; // Flasher, Left (stalk) (also PWM)
-int DinFlashRight = 10; // Flasher, Right (stalk) (also PWM)
+int D5_var =         9; // Not used (PWM)
+int D10_var =       10; // Not used (PWM)
 int DoutWiper =     11; // Windscreen wiper (also PWM)
 int DoutWasher =    12; // Windscreen washer
 int DoutFan =       13; // Windscreen fan (LED)
 
 // Reserving relay functions (not SW)
-// 1: 
-// 2: 
+// 1: High Beam
+// 2: Main lights
 // 3: 
 // 4: 
 // 5: 
-// 6: Flash Right
-// 7: Flash Left
-// 8: High Beam 
+// 6: 
+// 7: 
+// 8:  
 
