@@ -3,7 +3,6 @@ Arduino Control Unit for the 'mini-el' three-wheeler electric vehicle.
 
 This file will serve as the general entry point for the project. Hopefully, it will give any newcomers a rough idea of what the project is about and in combination with the open issues explain where it's at. 
 
-
 Also, this project contains the hardware and schematics for mounting the Arduino inside the original dashboard using as much of the original user interface as possible.
 
 
