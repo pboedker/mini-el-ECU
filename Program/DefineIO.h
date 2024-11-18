@@ -20,7 +20,7 @@ int DoutWiper =     11; // Windscreen wiper (also PWM)
 int DoutWasher =    12; // Windscreen washer
 int DoutFan =       13; // Windscreen fan (LED)
 
-// Reserving relay functions (not SW)
+// Reserving relay functions (not part of SW)
 // 1: High Beam
 // 2: Main lights
 // 3: 
