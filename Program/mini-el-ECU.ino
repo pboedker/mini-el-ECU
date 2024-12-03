@@ -8,6 +8,8 @@
 
 // Local libraries.
 #include "DefineIO.h"
+#include "Screen.h"
+
 
 /*-----( Declare Constants )-----*/
 const int tCycle = 10; // 10ms cycle time.
@@ -90,8 +92,13 @@ byte newChar5[8] =
   B00000
 };
 
+
 /*-----( Declare objects )-----*/
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
+
+LED led1(2); // create a LED object that attach to pin 2
+LED led2(3); // create a LED object that attach to pin 3
+
 
 /*-----( Declare Variables )-----*/
 unsigned long ulTick, ulTickCnt;
