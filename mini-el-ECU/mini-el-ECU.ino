@@ -188,6 +188,8 @@ void loop()
       // Update timer for next time
       timer100ms = 0;
 
+      led1.turnON();
+      
       // Print out keyboard voltage
       AinValue = analogRead(AinKey);      
       fKeyV = map(AinValue, 0, 1023, 5000, 0);
@@ -198,7 +200,7 @@ void loop()
     }
 
     lcd.setCursor(0, 3);
-    Bargraph(fKeyV / 50);    
+    led1.Bargraph(fKeyV / 50);    
     
     // Update 1 second timer and react to it
     timer1s += tCycle;
@@ -307,30 +309,4 @@ void menu(int iScreen, boolean bBuild)
   }  
 }
 
-void Bargraph(int iValue)
-{
-  int i;
-  
-  i = 20;
-  while (iValue > 0)
-  {
-    if (iValue >= 5)
-    {
-      lcd.write(5);
-      iValue -= 5;
-    }
-    else
-    {
-      lcd.write(iValue);
-      iValue = 0;
-    }
-    i -= 1;
-  }
-  
-  while (i > 0)
-  {
-    i--;
-    lcd.write(iValue);
-  }
-}
 

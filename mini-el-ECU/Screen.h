@@ -1,6 +1,6 @@
-// LED.h
-#ifndef LED_h
-#define LED_h
+// Screen.h
+#ifndef Screen_h
+#define Screen_h
 
 #include <Arduino.h>
 
@@ -14,6 +14,9 @@ class LED {
     void turnON();
     void turnOFF();
     int getState();
+    void Bargraph(int iValue);
+
 };
+
 
 #endif
