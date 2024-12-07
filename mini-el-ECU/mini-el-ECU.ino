@@ -1,10 +1,8 @@
-/* mini-el Control Unit
-  v1.1  24022018  Getting some IO's ready.
-*/
+/* mini-el Control Unit */
 
 
 
-// Common libraries.
+// Common libraries
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
@@ -16,90 +14,13 @@
 /*-----( Declare Constants )-----*/
 const int tCycle = 10; // 10ms cycle time.
 
-// Bargraph 0
-byte newChar0[8] =
-{
-  B00000,
-  B00000,
-  B00000,
-  B00000,
-  B00000,
-  B00000,
-  B00000,
-  B00000
-};
-
-// Bargraph 1
-byte newChar1[8] = 
-{
-  B00000,
-  B10000,
-  B10000,
-  B10000,
-  B10000,
-  B10000,
-  B10000,
-  B00000
-};
-
-// Bargraph 2
-byte newChar2[8] = 
-{
-  B00000,
-  B11000,
-  B11000,
-  B11000,
-  B11000,
-  B11000,
-  B11000,
-  B0000
-};
-
-// Bargraph 3
-byte newChar3[8] = 
-{
-  B00000,
-  B11100,
-  B11100,
-  B11100,
-  B11100,
-  B11100,
-  B11100,
-  B00000
-};
-
-// Bargraph 4
-byte newChar4[8] = 
-{
-  B00000,
-  B11110,
-  B11110,
-  B11110,
-  B11110,
-  B11110,
-  B11110,
-  B00000
-};
-
-// Bargraph 5
-byte newChar5[8] = 
-{
-  B00000,
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B00000
-};
 
 
 /*-----( Declare objects )-----*/
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
 
-LED led1(2); // create a LED object that attach to pin 2
-LED led2(3); // create a LED object that attach to pin 3
+Screen myScreen(17);
+
 
 
 /*-----( Declare Variables )-----*/
@@ -119,14 +40,14 @@ void setup()
 {
   Serial.begin(9600); // We will receive characters
 
-  // initialize the lcd for 20 chars 4 lines, turn on backlight. Create some new characters
+  // initialize the lcd for 20 chars 4 lines. Create some new characters
   lcd.begin(20,4);  
-  lcd.createChar(0, newChar0);
-  lcd.createChar(1, newChar1);
-  lcd.createChar(2, newChar2);
-  lcd.createChar(3, newChar3);
-  lcd.createChar(4, newChar4);
-  lcd.createChar(5, newChar5);
+// TODO  lcd.createChar(0, newChar0);
+//  lcd.createChar(1, newChar1);
+//  lcd.createChar(2, newChar2);
+//  lcd.createChar(3, newChar3);
+//  lcd.createChar(4, newChar4);
+//  lcd.createChar(5, newChar5);
 
   // Set analog pins to input
   pinMode(AinKey, INPUT);
@@ -187,9 +108,7 @@ void loop()
     {
       // Update timer for next time
       timer100ms = 0;
-
-      led1.turnON();
-      
+    
       // Print out keyboard voltage
       AinValue = analogRead(AinKey);      
       fKeyV = map(AinValue, 0, 1023, 5000, 0);
@@ -200,7 +119,7 @@ void loop()
     }
 
     lcd.setCursor(0, 3);
-    led1.Bargraph(fKeyV / 50);    
+    // myScreen.Bargraph(fKeyV / 50);    
     
     // Update 1 second timer and react to it
     timer1s += tCycle;
@@ -293,7 +212,7 @@ void menu(int iScreen, boolean bBuild)
       lcd.setCursor(0,1);
       lcd.print("mini-el Control Unit");
       lcd.setCursor(8,2);
-      lcd.print("v1.0");
+      lcd.print("v1.2");
       break;
       
     case 1:

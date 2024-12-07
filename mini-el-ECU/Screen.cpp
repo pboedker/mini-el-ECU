@@ -1,27 +1,16 @@
 // Screen.cpp
 #include "Screen.h"
 
-LED::LED(int pin) {
-  ledPin   = pin;
-  ledState = LOW;
-  pinMode(ledPin, OUTPUT);
+
+Screen::Screen(int pin) {
+  i = pin;
 }
 
-void LED::turnON() {
-  ledState = HIGH;
-  digitalWrite(ledPin, ledState);
+int Screen::getPin() {
+  return i;
 }
 
-void LED::turnOFF() {
-  ledState = LOW;
-  digitalWrite(ledPin, ledState);
-}
-
-int LED::getState() {
-  return ledState;
-}
-
-void LED::Bargraph(int iValue)
+void Screen::Bargraph(int iValue)
 {
   int i;
   
