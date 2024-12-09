@@ -18,8 +18,7 @@ const int tCycle = 10; // 10ms cycle time.
 
 /*-----( Declare objects )-----*/
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
-
-Screen myScreen(17);
+Screen myScreen(&lcd, 17);
 
 
 
@@ -40,7 +39,7 @@ void setup()
 {
   Serial.begin(9600); // We will receive characters
 
-  // initialize the lcd for 20 chars 4 lines. Create some new characters
+//  // initialize the lcd for 20 chars 4 lines. Create some new characters
   lcd.begin(20,4);  
 // TODO  lcd.createChar(0, newChar0);
 //  lcd.createChar(1, newChar1);
@@ -54,12 +53,12 @@ void setup()
   pinMode(AinBatV, INPUT);
   pinMode(AinBatI, INPUT);
 
-  // Turn on backlight
-  lcd.backlight();
-
-  // Show splash screen and then clear the screen
+//  // Turn on backlight
+//  lcd.backlight();
+//
+//  // Show splash screen and then clear the screen
   lcd.clear();
-  menu(0, true);
+  myScreen.Menu(0, true);
   delay(3000);
   lcd.clear();
   
@@ -99,8 +98,8 @@ void loop()
     {
       iBarD = -iBarD;
     }
-    // lcd.setCursor(0, 3);
-    // Bargraph(iBar);    
+    lcd.setCursor(0, 3);
+    myScreen.Bargraph(iBar);    
       
     // Update 100ms timer and react to it
     timer100ms += tCycle;
@@ -119,7 +118,7 @@ void loop()
     }
 
     lcd.setCursor(0, 3);
-    // myScreen.Bargraph(fKeyV / 50);    
+    myScreen.Bargraph(fKeyV / 50);    
     
     // Update 1 second timer and react to it
     timer1s += tCycle;
@@ -195,37 +194,5 @@ void getInput()
 } /*---( end getInput )---*/
 
 
-
-void menu(int iScreen, boolean bBuild)
-{
-  char cPSB;
-  int iPSB;
-    
-  if (bBuild)
-  {
-    lcd.clear();
-  }
-  
-  switch (iScreen)
-  {
-    case 0:
-      lcd.setCursor(0,1);
-      lcd.print("mini-el Control Unit");
-      lcd.setCursor(8,2);
-      lcd.print("v1.2");
-      break;
-      
-    case 1:
-      lcd.setCursor(0,0);
-      for (iPSB = 0; iPSB < 6; iPSB++)
-      {
-        lcd.write(iPSB);
-      }
-      break;
-      
-    case 2:
-      break;
-  }  
-}
 
 
