@@ -18,7 +18,7 @@ const int tCycle = 10; // 10ms cycle time.
 
 /*-----( Declare objects )-----*/
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
-Screen myScreen(&lcd, 17);
+Screen myScreen(&lcd);
 
 
 
@@ -39,25 +39,16 @@ void setup()
 {
   Serial.begin(9600); // We will receive characters
 
-//  // initialize the lcd for 20 chars 4 lines. Create some new characters
-  lcd.begin(20,4);  
-// TODO  lcd.createChar(0, newChar0);
-//  lcd.createChar(1, newChar1);
-//  lcd.createChar(2, newChar2);
-//  lcd.createChar(3, newChar3);
-//  lcd.createChar(4, newChar4);
-//  lcd.createChar(5, newChar5);
+  // Set the lcd size
+  myScreen.Init(20,4);
 
   // Set analog pins to input
   pinMode(AinKey, INPUT);
   pinMode(AinBatV, INPUT);
   pinMode(AinBatI, INPUT);
 
-//  // Turn on backlight
-//  lcd.backlight();
-//
-//  // Show splash screen and then clear the screen
-  lcd.clear();
+  // Show splash screen and then clear the screen
+//  lcd.clear();
   myScreen.Menu(0, true);
   delay(3000);
   lcd.clear();
@@ -68,7 +59,7 @@ void setup()
   
   timer1s = 0;
   timer100ms = 0;
-  iBarD = 1;
+  iBarD = 2;
 } /*---( end setup )---*/
 
 
@@ -92,22 +83,22 @@ void loop()
     // Update the tick counter with the cycle time
     ulTickCnt -= tCycle;
     
-    // Do a bargraph... 
-    iBar += iBarD;
-    if (iBar >= 100 || iBar <= 0)
-    {
-      iBarD = -iBarD;
-    }
-    lcd.setCursor(0, 3);
-    myScreen.Bargraph(iBar);    
-      
     // Update 100ms timer and react to it
     timer100ms += tCycle;
     if (timer100ms >= 100)
     {
       // Update timer for next time
       timer100ms = 0;
-    
+      
+      // Do a bargraph... 
+      iBar += iBarD;
+      if (iBar >= 100 || iBar <= 0)
+      {
+        iBarD = -iBarD;
+      }
+      lcd.setCursor(0, 3);
+      myScreen.Bargraph(iBar);
+        
       // Print out keyboard voltage
       AinValue = analogRead(AinKey);      
       fKeyV = map(AinValue, 0, 1023, 5000, 0);
@@ -117,9 +108,6 @@ void loop()
       lcd.print(fKeyV / 1000, 3);  
     }
 
-    lcd.setCursor(0, 3);
-    myScreen.Bargraph(fKeyV / 50);    
-    
     // Update 1 second timer and react to it
     timer1s += tCycle;
     if (timer1s >= 1000)
@@ -127,47 +115,47 @@ void loop()
       // Update timer for next time
       timer1s = 0;
       
-      // Update several values from analog input
-      getInput();
-      lcd.setCursor(10, 0);
-      if (fBatV < 0)
-      {
-        fBatV = 0;
-      }
-      if (fBatV < 10)
-      {
-        lcd.print(" ");
-      }        
-      lcd.print(fBatV,1);
-      lcd.print("V");
+//      // Update several values from analog input
+//      getInput();
+//      lcd.setCursor(10, 0);
+//      if (fBatV < 0)
+//      {
+//        fBatV = 0;
+//      }
+//      if (fBatV < 10)
+//      {
+//        lcd.print(" ");
+//      }        
+//      lcd.print(fBatV,1);
+//      lcd.print("V");
 
-      fBatI = -9;
-      lcd.setCursor(0,0);
-      if (fBatI >= 0)
-      {
-        lcd.print(" ");
-        if (fBatI < 10)
-        {
-          lcd.print(" ");
-        }        
-        if (fBatI < 100)
-        {
-          lcd.print(" ");
-        }        
-      }
-      else
-      {
-        if (fBatI > -100)
-        {
-          lcd.print(" ");
-        }
-        if (fBatI > -10)
-        {
-          lcd.print(" ");
-        }
-      }
-      lcd.print(fBatI,0);
-      lcd.print("A");
+//      fBatI = -8;
+//      lcd.setCursor(0,0);
+//      if (fBatI >= 0)
+//      {
+//        lcd.print(" ");
+//        if (fBatI < 10)
+//        {
+//          lcd.print(" ");
+//        }        
+//        if (fBatI < 100)
+//        {
+//          lcd.print(" ");
+//        }        
+//      }
+//      else
+//      {
+//        if (fBatI > -100)
+//        {
+//          lcd.print(" ");
+//        }
+//        if (fBatI > -10)
+//        {
+//          lcd.print(" ");
+//        }
+//      }
+//      lcd.print(fBatI,0);
+//      lcd.print("A");
     }
     
   }
@@ -192,7 +180,5 @@ void getInput()
   fBatV = map(AinValue, 0, 1023, 0, 500);  
   fBatV = fBatV / 10;
 } /*---( end getInput )---*/
-
-
 
 
