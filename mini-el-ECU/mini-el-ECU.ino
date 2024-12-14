@@ -1,5 +1,8 @@
 /* mini-el Control Unit */
 
+// TODO
+// Version number struct
+
 
 
 // Common libraries
@@ -9,6 +12,7 @@
 // Local libraries.
 #include "DefineIO.h"
 #include "Screen.h"
+#include "Task.h"
 
 
 /*-----( Declare Constants )-----*/
@@ -19,14 +23,17 @@ const int tCycle = 10; // 10ms cycle time.
 /*-----( Declare objects )-----*/
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
 Screen myScreen(&lcd);
-
+Task task1(10);
+Task taskScreen(500);
+Task taskSecond(1000);
 
 
 /*-----( Declare Variables )-----*/
-unsigned long ulTick, ulTickCnt;
+unsigned long ulTickOld, ulTickCnt; // One tick is 1 ms
 int timer1s, timer100ms;
 unsigned long ulTemp;
-int iBar, iBarD;
+int iBarD;
+int iSeconds = 0;
 
 float fKeyV; // The voltage from the keyboard
 float fBatV; // The voltage of the battery
@@ -48,18 +55,15 @@ void setup()
   pinMode(AinBatI, INPUT);
 
   // Show splash screen and then clear the screen
-//  lcd.clear();
   myScreen.Menu(0, true);
-  delay(3000);
-  lcd.clear();
-  
+ 
   // Get the milliseconds in preparation for first timer event.
-  ulTick = millis();
+  ulTickOld = millis();
   ulTickCnt = 0;
   
   timer1s = 0;
   timer100ms = 0;
-  iBarD = 2;
+  iBarD = 1;
 } /*---( end setup )---*/
 
 
@@ -69,12 +73,26 @@ void loop()
 {
   int AinValue = 0; // Temporary value from the sensor
 
+  ulTemp = millis();
+
+  if (taskScreen.Tick(ulTemp))
+  {
+    myScreen.Menu(1, false);
+  }
+
+  if (taskSecond.Tick(ulTemp))
+  {
+    iSeconds++;
+  }
+
+
+
   // Update the tick counter with elapsed milliseconds since last
   ulTemp = millis();
-  if (ulTemp > ulTick)
+  if (ulTemp > ulTickOld)
   {
-    ulTickCnt += (ulTemp - ulTick);
-    ulTick = ulTemp;
+    ulTickCnt += (ulTemp - ulTickOld);
+    ulTickOld = ulTemp;
   }
   
   // Check if we should do a cycle
@@ -91,13 +109,11 @@ void loop()
       timer100ms = 0;
       
       // Do a bargraph... 
-      iBar += iBarD;
-      if (iBar >= 100 || iBar <= 0)
+      myScreen.iBar += iBarD;
+      if (myScreen.iBar >= 100 || myScreen.iBar <= 0)
       {
         iBarD = -iBarD;
       }
-      lcd.setCursor(0, 3);
-      myScreen.Bargraph(iBar);
         
       // Print out keyboard voltage
       AinValue = analogRead(AinKey);      
@@ -114,7 +130,9 @@ void loop()
     {
       // Update timer for next time
       timer1s = 0;
-      
+
+      myScreen.Menu(1, true);
+
 //      // Update several values from analog input
 //      getInput();
 //      lcd.setCursor(10, 0);
@@ -147,7 +165,7 @@ void loop()
 //      {
 //        if (fBatI > -100)
 //        {
-//          lcd.print(" ");
+//          lcd.print(" ");else
 //        }
 //        if (fBatI > -10)
 //        {

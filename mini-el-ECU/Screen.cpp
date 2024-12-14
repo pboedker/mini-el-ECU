@@ -6,7 +6,7 @@ Screen::Screen(LiquidCrystal_I2C* initLCD) {
 }
 
 void Screen::Init(int cols, int rows) {
-  // Unused
+  // Bargraph 0
   byte newChar0[8] = {
     B00000,
     B00000,
@@ -74,7 +74,7 @@ void Screen::Init(int cols, int rows) {
 
   // Initialize the lcd with the size
   lcd->begin(cols, rows);
-
+      
   lcd->createChar(0, newChar0);
   lcd->createChar(1, newChar1);
   lcd->createChar(2, newChar2);
@@ -122,7 +122,6 @@ void Screen::DisplayMessage(const char* message, int col, int row) {
 
 void Screen::Menu(int iScreen, boolean bBuild)
 {
-  char cPSB;
   int iPSB;
     
   if (bBuild)
@@ -133,19 +132,19 @@ void Screen::Menu(int iScreen, boolean bBuild)
   switch (iScreen)
   {
     case 0:
-      lcd->setCursor(0,1);
-      lcd->print("mini-el Control Unit");
-      lcd->setCursor(8,2);
-      lcd->print("v1.2");
+      DisplayMessage("mini-el Control Unit", 0, 1);
+      DisplayMessage("v1.2.0", 7, 2);
       break;
       
-//    case 1:
-//      lcd->setCursor(0,0);
-//      for (iPSB = 0; iPSB < 6; iPSB++)
-//      {
-//        lcd->write(iPSB);
-//      }
-//      break;
+    case 1:
+      lcd->setCursor(0, 3);
+      Bargraph(iBar);
+      lcd->setCursor(0, 0);
+      lcd->print(iBar);
+
+      lcd->setCursor(10, 0);
+      lcd->print(iSeconds);
+      break;
       
     case 2:
       break;
