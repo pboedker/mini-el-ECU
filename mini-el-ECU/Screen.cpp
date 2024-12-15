@@ -122,8 +122,7 @@ void Screen::DisplayMessage(const char* message, int col, int row) {
 
 void Screen::Menu(int iScreen, boolean bBuild)
 {
-  int iPSB;
-    
+
   if (bBuild)
   {
     lcd->clear();
@@ -141,9 +140,6 @@ void Screen::Menu(int iScreen, boolean bBuild)
       Bargraph(iBar);
       lcd->setCursor(0, 0);
       lcd->print(iBar);
-
-      lcd->setCursor(10, 0);
-      lcd->print(iSeconds);
       break;
       
     case 2:

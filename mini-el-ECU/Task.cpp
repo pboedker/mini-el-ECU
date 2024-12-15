@@ -3,26 +3,28 @@
 
 Task::Task(unsigned long ulInitInterval) {
   ulInterval = ulInitInterval;
+  ulTickCnt = 0;
 }
 
-bool Task::Tick(unsigned long ulMillis) {
-  if (ulTickOld = 0)
+bool Task::Tick(unsigned long ulTick) {
+  if (ulTickOld == 0)
   {
-    ulTickOld = ulMillis;
+    ulTickOld = ulTick;
   }
   else
   {
-    if (ulMillis > ulTickOld)
+    if (ulTick > ulTickOld)
     {
-      ulTickCnt += (ulMillis - ulTickOld);
-      ulTickOld = ulMillis;
+      ulTickCnt += (ulTick - ulTickOld);
+      ulTickOld = ulTick;
     }
-    if (ulTickCnt > ulInterval)
+    if (ulTickCnt > 1000) //ulInterval)
     {
-        ulTickCnt -= ulInterval;
+      ulTickCnt -= ulInterval;
       return true;
     }
   }
-  return false;
+  
+  return false; // Default return
 }
 

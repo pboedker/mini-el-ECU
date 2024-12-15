@@ -11,7 +11,6 @@ class Screen {
 
   public:
     int iBar;
-    int iSeconds;
     
     Screen(LiquidCrystal_I2C* myLCD);
     void Init(int cols, int rows);

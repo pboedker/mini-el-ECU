@@ -8,10 +8,10 @@ class Task {
   private:
     unsigned long ulInterval;
     unsigned long ulTickOld, ulTickCnt;
-
+    
   public:
     Task(unsigned long ulInitInterval);
-    bool Tick(unsigned long ulMillis);
+    bool Tick(unsigned long ulTick);
 };
 
 #endif
