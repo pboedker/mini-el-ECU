@@ -22,7 +22,7 @@ unsigned long ulTicks;
 /*-----( Declare objects )-----*/
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
 Screen myScreen(&lcd);
-Task task10(10);
+//Task task10(10);
 Task taskScreen(500);
 Task taskSecond(1000);
 
@@ -69,9 +69,9 @@ void loop()
 
   ulTicks = millis();
 
-  if (task10.Tick(ulTicks))
-  {
-  }
+//  if (task10.Tick(ulTicks))
+//  {
+//  }
 
   if (taskScreen.Tick(ulTicks))
   {

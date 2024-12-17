@@ -6,11 +6,12 @@
 
 class Task {
   private:
-    unsigned long ulInterval;
-    unsigned long ulTickOld, ulTickCnt;
+    unsigned int uiInterval;
+    unsigned int uiTickCnt;
+    unsigned long ulTickOld;
     
   public:
-    Task(unsigned long ulInitInterval);
+    Task(unsigned int uiInitInterval);
     bool Tick(unsigned long ulTick);
 };
 

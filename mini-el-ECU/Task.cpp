@@ -1,9 +1,9 @@
 // Task.cpp
 #include "Task.h"
 
-Task::Task(unsigned long ulInitInterval) {
-  ulInterval = ulInitInterval;
-  ulTickCnt = 0;
+Task::Task(unsigned int uiInitInterval) {
+  uiInterval = uiInitInterval;
+  uiTickCnt = 0;
 }
 
 bool Task::Tick(unsigned long ulTick) {
@@ -15,12 +15,12 @@ bool Task::Tick(unsigned long ulTick) {
   {
     if (ulTick > ulTickOld)
     {
-      ulTickCnt += (ulTick - ulTickOld);
+      uiTickCnt += (ulTick - ulTickOld);
       ulTickOld = ulTick;
     }
-    if (ulTickCnt > 1000) //ulInterval)
+    if (uiTickCnt > uiInterval)
     {
-      ulTickCnt -= ulInterval;
+      uiTickCnt -= uiInterval;
       return true;
     }
   }
