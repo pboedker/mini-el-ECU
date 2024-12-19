@@ -5,7 +5,7 @@ Screen::Screen(LiquidCrystal_I2C* initLCD) {
   lcd = initLCD;
 }
 
-void Screen::Init(int cols, int rows) {
+void Screen::Init(byte cols, byte rows) {
   // Bargraph 0
   byte newChar0[8] = {
     B00000,
@@ -87,9 +87,8 @@ void Screen::Init(int cols, int rows) {
   lcd->clear();
 }
 
-void Screen::Bargraph(int barValue)
-{
-  int i;
+void Screen::Bargraph(byte barValue) {
+  byte i;
   
   i = 20;
   while (barValue > 0)
@@ -116,24 +115,33 @@ void Screen::Bargraph(int barValue)
 }
 
 // Displays a message on the LCD
-void Screen::DisplayMessage(const char* message, int col, int row) {
+void Screen::DisplayMessage(const char* message, byte col, byte row) {
     lcd->setCursor(col, row);
     lcd->print(message);
 }
 
-void Screen::Menu(int iScreen, boolean build)
-{
+void Screen::MenuSelect(byte menu) {
+  activeMenu = menu;
+  menuTicksAtChange = millis();
+  lcd->clear();
+  MenuUpdate();
+}
 
-  if (build)
-  {
-    lcd->clear();
-  }
-  
-  switch (iScreen)
+void Screen::MenuUpdate() {
+  bool init = (menuTicksAtChange == millis());
+
+  init = true;
+  // Change, so that each case has an init part and an update part.
+  switch (activeMenu)
   {
     case 0:
-      DisplayMessage("mini-el Control Unit", 0, 1);
-      DisplayMessage("v1.2.0", 7, 2);
+      if (init) {
+        DisplayMessage("mini-el Control Unit", 0, 1);
+        DisplayMessage("v1.2.0", 7, 2);
+      }
+      if (millis() >= (menuTicksAtChange + 3000)) {
+        MenuSelect(1);
+      }
       break;
       
     case 1:

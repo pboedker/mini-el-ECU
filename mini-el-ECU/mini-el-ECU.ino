@@ -18,7 +18,7 @@
 /*-----( Declare Constants )-----*/
 unsigned long ulTicks; 
 
- 
+
 /*-----( Declare objects )-----*/
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
 Screen myScreen(&lcd);
@@ -37,7 +37,7 @@ float fBatI; // The current from the battery
 
 
 // setup: Runs once.
-void setup(){
+void setup() {
   Serial.begin(9600); // We will receive characters
 
   // Set the lcd size
@@ -49,26 +49,20 @@ void setup(){
   pinMode(AinBatI, INPUT);
 
   // Show splash screen and then clear the screen
-  myScreen.Menu(0, true);
- 
-//  // Get the milliseconds in preparation for first timer event.
-//  ulTickOld = millis();
-//  ulTickCnt = 0;
-  
+  myScreen.MenuSelect(0);
+
   iBarD = 1;
 } /*---( end setup )---*/
 
 
 
 /*---( loop: Runs constantly )---*/
-void loop(){
+void loop() {
   int AinValue = 0; // Temporary value from the sensor
 
   ulTicks = millis();
 
   if (taskScreen.Tick(ulTicks)){
-    myScreen.Menu(1, false);
-
     // Do a bargraph... 
     myScreen.iBar += 2*iBarD;
     if (myScreen.iBar >= 100 || myScreen.iBar <= 0)
@@ -76,13 +70,15 @@ void loop(){
       iBarD = -iBarD;
     }
 
-    // Print out keyboard voltage
-    AinValue = analogRead(AinKey);      
-    fKeyV = map(AinValue, 0, 1023, 5000, 0);
-    lcd.setCursor(0, 2);
-    lcd.print("     ");  
-    lcd.setCursor(0, 2);
-    lcd.print(fKeyV / 1000, 3);  
+//    // Print out keyboard voltage
+//    AinValue = analogRead(AinKey);      
+//    fKeyV = map(AinValue, 0, 1023, 5000, 0);
+//    lcd.setCursor(0, 2);
+//    lcd.print("     ");  
+//    lcd.setCursor(0, 2);
+//    lcd.print(fKeyV / 1000, 3);
+
+    myScreen.MenuUpdate();
   }
 
   if (taskSecond.Tick(ulTicks)){
@@ -93,8 +89,7 @@ void loop(){
 
 
 /*---( getInput: Updates the various inputs to update variables )---*/
-void getInput()
-{
+void getInput() {
   int AinValue; // Temporary value from the sensor
 
   // Read the value from the sensor

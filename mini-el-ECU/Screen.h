@@ -8,15 +8,18 @@
 class Screen {
   private:
     LiquidCrystal_I2C* lcd;
+    unsigned long menuTicksAtChange;
+    byte activeMenu;
 
   public:
-    int iBar;
+    byte iBar;
     
     Screen(LiquidCrystal_I2C* myLCD);
-    void Init(int cols, int rows);
-    void Bargraph(int iValue);
-    void DisplayMessage(const char* message, int col, int row);
-    void Menu(int iScreen, boolean bBuild);
+    void Init(byte cols, byte rows);
+    void Bargraph(byte barValue);
+    void DisplayMessage(const char* message, byte col, byte row);
+    void MenuSelect(byte menu);
+    void MenuUpdate();
 };
 
 #endif
