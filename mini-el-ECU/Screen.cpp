@@ -87,30 +87,31 @@ void Screen::Init(int cols, int rows) {
   lcd->clear();
 }
 
-void Screen::Bargraph(int iValue)
+void Screen::Bargraph(int barValue)
 {
   int i;
   
   i = 20;
-  while (iValue > 0)
+  while (barValue > 0)
   {
-    if (iValue >= 5)
+    if (barValue >= 5)
     {
       lcd->write(5);
-      iValue -= 5;
+      barValue -= 5;
     }
     else
     {
-      lcd->write(iValue);
-      iValue = 0;
+      lcd->write(barValue);
+      barValue = 0;
     }
     i -= 1;
   }
   
-  while (i > 0)
+  while (i > 0) // barValue (rest) is now zero
   {
     i--;
-    lcd->write(iValue);
+//    lcd->write(barValue);
+    lcd->write(barValue);
   }
 }
 
@@ -120,10 +121,10 @@ void Screen::DisplayMessage(const char* message, int col, int row) {
     lcd->print(message);
 }
 
-void Screen::Menu(int iScreen, boolean bBuild)
+void Screen::Menu(int iScreen, boolean build)
 {
 
-  if (bBuild)
+  if (build)
   {
     lcd->clear();
   }

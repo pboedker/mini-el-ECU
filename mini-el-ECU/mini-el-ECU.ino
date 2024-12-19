@@ -18,7 +18,7 @@
 /*-----( Declare Constants )-----*/
 unsigned long ulTicks; 
 
-
+ 
 /*-----( Declare objects )-----*/
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
 Screen myScreen(&lcd);
@@ -28,7 +28,6 @@ Task taskSecond(1000);
 
 
 /*-----( Declare Variables )-----*/
-unsigned long ulTickOld, ulTickCnt; // One tick is 1 ms
 int iBarD;
 
 float fKeyV; // The voltage from the keyboard
@@ -38,8 +37,7 @@ float fBatI; // The current from the battery
 
 
 // setup: Runs once.
-void setup()   
-{
+void setup(){
   Serial.begin(9600); // We will receive characters
 
   // Set the lcd size
@@ -53,9 +51,9 @@ void setup()
   // Show splash screen and then clear the screen
   myScreen.Menu(0, true);
  
-  // Get the milliseconds in preparation for first timer event.
-  ulTickOld = millis();
-  ulTickCnt = 0;
+//  // Get the milliseconds in preparation for first timer event.
+//  ulTickOld = millis();
+//  ulTickCnt = 0;
   
   iBarD = 1;
 } /*---( end setup )---*/
@@ -63,21 +61,22 @@ void setup()
 
 
 /*---( loop: Runs constantly )---*/
-void loop()
-{
+void loop(){
   int AinValue = 0; // Temporary value from the sensor
 
   ulTicks = millis();
 
-//  if (task10.Tick(ulTicks))
-//  {
-//  }
+  if (taskScreen.Tick(ulTicks)){
+    myScreen.Menu(1, false);
 
-  if (taskScreen.Tick(ulTicks))
-  {
-    myScreen.Menu(1, true); 
+    // Do a bargraph... 
+    myScreen.iBar += 2*iBarD;
+    if (myScreen.iBar >= 100 || myScreen.iBar <= 0)
+    {
+      iBarD = -iBarD;
+    }
 
-      // Print out keyboard voltage
+    // Print out keyboard voltage
     AinValue = analogRead(AinKey);      
     fKeyV = map(AinValue, 0, 1023, 5000, 0);
     lcd.setCursor(0, 2);
@@ -86,14 +85,7 @@ void loop()
     lcd.print(fKeyV / 1000, 3);  
   }
 
-  if (taskSecond.Tick(ulTicks))
-  {
-    // Do a bargraph... 
-    myScreen.iBar += iBarD;
-    if (myScreen.iBar >= 100 || myScreen.iBar <= 0)
-    {
-      iBarD = -iBarD;
-    }
+  if (taskSecond.Tick(ulTicks)){
   }
   
 } /*---( end loop )---*/
@@ -118,4 +110,17 @@ void getInput()
   fBatV = fBatV / 10;
 } /*---( end getInput )---*/
 
+
+
+/* --- Various gold --- 
+float valueFloat = 23.456; // Example float value
+char bufferFloat[6]; // Buffer to hold the formatted string
+// Format the float to ##.# (width 4, 1 decimal place)
+dtostrf(valueFloat, 4, 1, bufferFloat);
+
+int valueInt = 123;
+char bufferInt[20];
+// Convert integer to string with format specifier
+sprintf(bufferInt, "%d", valueInt);
+--- */
 
