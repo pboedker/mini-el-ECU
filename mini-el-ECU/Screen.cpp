@@ -6,7 +6,7 @@ Screen::Screen(LiquidCrystal_I2C* initLCD) {
 }
 
 void Screen::Init(byte cols, byte rows) {
-  // Bargraph 0
+  // Bargraph 0 (we're using a space instead.
   byte newChar0[8] = {
     B00000,
     B00000,
@@ -75,7 +75,7 @@ void Screen::Init(byte cols, byte rows) {
   // Initialize the lcd with the size
   lcd->begin(cols, rows);
       
-  lcd->createChar(0, newChar0);
+//  lcd->createChar(0, newChar0);
   lcd->createChar(1, newChar1);
   lcd->createChar(2, newChar2);
   lcd->createChar(3, newChar3);
@@ -109,8 +109,7 @@ void Screen::Bargraph(byte barValue) {
   while (i > 0) // barValue (rest) is now zero
   {
     i--;
-//    lcd->write(barValue);
-    lcd->write(barValue);
+    lcd->write(' ');
   }
 }
 
