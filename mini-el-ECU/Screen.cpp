@@ -149,7 +149,7 @@ void Screen::MenuUpdate() {
       
     case 1:
       lcd->setCursor(0, 0);
-      Bargraph(100-iBar);
+      Bargraph(numbers[WORD_0]);
 
       dtostrf(valueFloat, 4, 1, myBuffer);
       DisplayMessage(myBuffer, 0, 1);
@@ -159,11 +159,18 @@ void Screen::MenuUpdate() {
       DisplayMessage(myBuffer, 10, 1);
       lcd->print(" V");
 
+      dtostrf(numbers[WORD_0], 3, 0, myBuffer);
+      DisplayMessage(myBuffer, 8, 1);
+      dtostrf(numbers[WORD_1], 3, 0, myBuffer);
+      DisplayMessage(myBuffer, 11, 1);
+      dtostrf(numbers[WORD_2], 3, 0, myBuffer);
+      DisplayMessage(myBuffer, 14, 1);
+      dtostrf(numbers[WORD_3], 3, 0, myBuffer);
+      DisplayMessage(myBuffer, 17, 1);
 
-//      lcd->setCursor(0, 2);
-//      lcd->print(iBar);
-      sprintf(myBuffer, "%3d Bar", iBar);
+      dtostrf(iBar, 3, 0, myBuffer);
       DisplayMessage(myBuffer, 1, 2);
+      lcd->print(" Bar");
       
       lcd->setCursor(0, 3);
       Bargraph(iBar);
