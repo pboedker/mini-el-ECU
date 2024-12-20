@@ -87,18 +87,19 @@ void Screen::Init(byte cols, byte rows) {
   lcd->clear();
 }
 
+// Writes a bargraph of 0-100, divided into 20 chars
 void Screen::Bargraph(byte barValue) {
   byte i;
   
   i = 20;
   while (barValue > 0)
   {
-    if (barValue >= 5)
+    if (barValue >= 5) // Write a full character (width 5)
     {
       lcd->write(5);
       barValue -= 5;
     }
-    else
+    else // Write a partial character (width == barValue rest)
     {
       lcd->write(barValue);
       barValue = 0;
@@ -106,7 +107,7 @@ void Screen::Bargraph(byte barValue) {
     i -= 1;
   }
   
-  while (i > 0) // barValue (rest) is now zero
+  while (i > 0) // Write the rest as spaces (barValue is now zero)
   {
     i--;
     lcd->write(' ');
@@ -128,6 +129,9 @@ void Screen::MenuSelect(byte menu) {
 
 void Screen::MenuUpdate() {
   bool init = (menuTicksAtChange == millis());
+  int valueInt = 123;
+  float valueFloat = 23.456; // Example float value
+  char myBuffer[10]; // Buffer to hold the formatted string
 
   init = true;
   // Change, so that each case has an init part and an update part.
@@ -144,10 +148,25 @@ void Screen::MenuUpdate() {
       break;
       
     case 1:
+      lcd->setCursor(0, 0);
+      Bargraph(100-iBar);
+
+      dtostrf(valueFloat, 4, 1, myBuffer);
+      DisplayMessage(myBuffer, 0, 1);
+      lcd->print(" A");
+      
+      dtostrf(valueInt, 3, 0, myBuffer);
+      DisplayMessage(myBuffer, 10, 1);
+      lcd->print(" V");
+
+
+//      lcd->setCursor(0, 2);
+//      lcd->print(iBar);
+      sprintf(myBuffer, "%3d Bar", iBar);
+      DisplayMessage(myBuffer, 1, 2);
+      
       lcd->setCursor(0, 3);
       Bargraph(iBar);
-      lcd->setCursor(0, 0);
-      lcd->print(iBar);
       break;
       
     case 2:
