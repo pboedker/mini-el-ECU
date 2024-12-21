@@ -2,7 +2,7 @@
 #ifndef Task_h
 #define Task_h
 
-#include <Arduino.h>
+// TODO, delete? #include <Arduino.h>
 
 class Task {
   private:
@@ -16,3 +16,4 @@ class Task {
 };
 
 #endif
+

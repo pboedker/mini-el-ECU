@@ -129,8 +129,6 @@ void Screen::MenuSelect(byte menu) {
 
 void Screen::MenuUpdate() {
   bool init = (menuTicksAtChange == millis());
-  int valueInt = 123;
-  float valueFloat = 23.456; // Example float value
   char myBuffer[10]; // Buffer to hold the formatted string
 
   init = true;
@@ -149,31 +147,21 @@ void Screen::MenuUpdate() {
       
     case 1:
       lcd->setCursor(0, 0);
-      Bargraph(numbers[WORD_0]);
+      Bargraph(regs[REG_SPEED] / 10);
 
-      dtostrf(valueFloat, 4, 1, myBuffer);
+      dtostrf(regs[REG_SPEED] / 10, 3, 0, myBuffer);
       DisplayMessage(myBuffer, 0, 1);
+      
+      dtostrf((float)regs[AinBatI] / 10, 5, 1, myBuffer);
+      DisplayMessage(myBuffer, 13, 1);
       lcd->print(" A");
       
-      dtostrf(valueInt, 3, 0, myBuffer);
-      DisplayMessage(myBuffer, 10, 1);
+      dtostrf((float)regs[AinBatV] / 10, 5, 1, myBuffer);
+      DisplayMessage(myBuffer, 13, 2);
       lcd->print(" V");
 
-      dtostrf(numbers[WORD_0], 3, 0, myBuffer);
-      DisplayMessage(myBuffer, 8, 1);
-      dtostrf(numbers[WORD_1], 3, 0, myBuffer);
-      DisplayMessage(myBuffer, 11, 1);
-      dtostrf(numbers[WORD_2], 3, 0, myBuffer);
-      DisplayMessage(myBuffer, 14, 1);
-      dtostrf(numbers[WORD_3], 3, 0, myBuffer);
-      DisplayMessage(myBuffer, 17, 1);
-
-      dtostrf(iBar, 3, 0, myBuffer);
-      DisplayMessage(myBuffer, 1, 2);
-      lcd->print(" Bar");
-      
       lcd->setCursor(0, 3);
-      Bargraph(iBar);
+      Bargraph(regs[REG_SOC] / 10);
       break;
       
     case 2:

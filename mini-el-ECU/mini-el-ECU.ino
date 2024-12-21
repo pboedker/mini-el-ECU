@@ -3,14 +3,12 @@
 // TODO
 // Version number struct
 
-
-
 // Common libraries
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
 // Local libraries.
-#include "DefineIO.h"
+#include "Globals.h"
 #include "Screen.h"
 #include "Task.h"
 
@@ -21,7 +19,7 @@ unsigned long ulTicks;
 
 /*-----( Declare objects )-----*/
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
-Screen myScreen(&lcd);
+Screen screen(&lcd);
 //Task task10(10);
 Task taskScreen(500);
 Task taskSecond(1000);
@@ -41,44 +39,38 @@ void setup() {
   Serial.begin(9600); // We will receive characters
 
   // Set the lcd size
-  myScreen.Init(20,4);
+  screen.Init(20,4);
 
   // Set analog pins to input
-  pinMode(AinKey, INPUT);
+  pinMode(AinKeys, INPUT);
   pinMode(AinBatV, INPUT);
   pinMode(AinBatI, INPUT);
 
   // Show splash screen and then clear the screen
-  myScreen.MenuSelect(0);
+  screen.MenuSelect(0);
 
-  iBarD = 1;
+  iBarD = 30;
+  regs[AinBatI] = 1723;
+  regs[AinBatV] = 374;
+  regs[REG_SPEED] = 143;
+  regs[REG_SOC] = 636;
 } /*---( end setup )---*/
 
 
 
 /*---( loop: Runs constantly )---*/
 void loop() {
-  int AinValue = 0; // Temporary value from the sensor
-
   ulTicks = millis();
 
   if (taskScreen.Tick(ulTicks)){
-    // Do a bargraph... 
-    myScreen.iBar += 2*iBarD;
-    if (myScreen.iBar >= 100 || myScreen.iBar <= 0)
+    // Do a bargraph...
+    regs[REG_SPEED] += iBarD;
+    if (regs[REG_SPEED] >= 900 || regs[REG_SPEED] <= 100)
     {
       iBarD = -iBarD;
     }
 
-//    // Print out keyboard voltage
-//    AinValue = analogRead(AinKey);      
-//    fKeyV = map(AinValue, 0, 1023, 5000, 0);
-//    lcd.setCursor(0, 2);
-//    lcd.print("     ");  
-//    lcd.setCursor(0, 2);
-//    lcd.print(fKeyV / 1000, 3);
-
-    myScreen.MenuUpdate();
+    screen.MenuUpdate();
   }
 
   if (taskSecond.Tick(ulTicks)){
@@ -103,6 +95,10 @@ void getInput() {
   // Map it to the range of the analog variable, first integer then with one decimal
   fBatV = map(AinValue, 0, 1023, 0, 500);  
   fBatV = fBatV / 10;
+
+  // Print out keyboard voltage
+  AinValue = analogRead(AinKeys);      
+  fKeyV = map(AinValue, 0, 1023, 5000, 0);
 } /*---( end getInput )---*/
 
 
