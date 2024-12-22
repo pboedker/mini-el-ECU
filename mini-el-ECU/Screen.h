@@ -2,22 +2,15 @@
 #ifndef Screen_h
 #define Screen_h
 
-#include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
 #include "Globals.h"
-
-
-//extern word regs[8];
-//extern byte REG_SPEED;
-//extern byte REG_SOC;
-//extern byte AinBatI;// =       A2; // Input pin for the battery current
-//extern byte AinBatV;// =       A3; // Input pin for the full battery voltage
 
 class Screen {
   private:
     LiquidCrystal_I2C* lcd;
     unsigned long menuTicksAtChange;
-    byte activeMenu;
+    byte menuActive;
+    bool menuInit;
     
   public:
     Screen(LiquidCrystal_I2C* myLCD);

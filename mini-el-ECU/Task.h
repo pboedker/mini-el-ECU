@@ -2,8 +2,6 @@
 #ifndef Task_h
 #define Task_h
 
-// TODO, delete? #include <Arduino.h>
-
 class Task {
   private:
     unsigned int uiInterval;

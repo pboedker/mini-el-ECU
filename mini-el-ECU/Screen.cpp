@@ -121,22 +121,21 @@ void Screen::DisplayMessage(const char* message, byte col, byte row) {
 }
 
 void Screen::MenuSelect(byte menu) {
-  activeMenu = menu;
+  menuActive = menu;
+  menuInit = true;
   menuTicksAtChange = millis();
   lcd->clear();
   MenuUpdate();
 }
 
 void Screen::MenuUpdate() {
-  bool init = (menuTicksAtChange == millis());
   char myBuffer[10]; // Buffer to hold the formatted string
 
-  init = true;
   // Change, so that each case has an init part and an update part.
-  switch (activeMenu)
+  switch (menuActive)
   {
     case 0:
-      if (init) {
+      if (menuInit) {
         DisplayMessage("mini-el Control Unit", 0, 1);
         DisplayMessage("v1.2.0", 7, 2);
       }
@@ -152,13 +151,24 @@ void Screen::MenuUpdate() {
       dtostrf(regs[REG_SPEED] / 10, 3, 0, myBuffer);
       DisplayMessage(myBuffer, 0, 1);
       
-      dtostrf((float)regs[AinBatI] / 10, 5, 1, myBuffer);
-      DisplayMessage(myBuffer, 13, 1);
+      dtostrf((float)regs[REG_BAT_I] / 10, 6, 1, myBuffer);
+      DisplayMessage(myBuffer, 12, 1);
       lcd->print(" A");
       
-      dtostrf((float)regs[AinBatV] / 10, 5, 1, myBuffer);
+      dtostrf((float)regs[REG_BAT_V] / 10, 5, 1, myBuffer);
       DisplayMessage(myBuffer, 13, 2);
       lcd->print(" V");
+
+      regs[REG_GEAR] = regs[REG_SPEED] / 250;
+      if (regs[REG_GEAR] == 1) {
+        DisplayMessage("\"D\"", 0, 2);
+      }
+      else if (regs[REG_GEAR] == 2) {
+        DisplayMessage("\"R\"", 0, 2);
+      }
+      else {
+        DisplayMessage("\"N\"", 0, 2);
+      }
 
       lcd->setCursor(0, 3);
       Bargraph(regs[REG_SOC] / 10);
@@ -166,7 +176,8 @@ void Screen::MenuUpdate() {
       
     case 2:
       break;
-  }  
-}
+  }
 
+  menuInit = false;
+}
 

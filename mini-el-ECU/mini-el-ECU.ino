@@ -28,9 +28,9 @@ Task taskSecond(1000);
 /*-----( Declare Variables )-----*/
 int iBarD;
 
-float fKeyV; // The voltage from the keyboard
-float fBatV; // The voltage of the battery
-float fBatI; // The current from the battery
+//float fKeyV; // The voltage from the keyboard
+//float fBatV; // The voltage of the battery
+//float fBatI; // The current from the battery
 
 
 
@@ -50,8 +50,8 @@ void setup() {
   screen.MenuSelect(0);
 
   iBarD = 30;
-  regs[AinBatI] = 1723;
-  regs[AinBatV] = 374;
+  regs[REG_BAT_I] = 1723;
+  regs[REG_BAT_V] = 374;
   regs[REG_SPEED] = 143;
   regs[REG_SOC] = 636;
 } /*---( end setup )---*/
@@ -62,18 +62,19 @@ void setup() {
 void loop() {
   ulTicks = millis();
 
-  if (taskScreen.Tick(ulTicks)){
+  if (taskScreen.Tick(ulTicks)) {
+    getInput(false);
+    
     // Do a bargraph...
     regs[REG_SPEED] += iBarD;
-    if (regs[REG_SPEED] >= 900 || regs[REG_SPEED] <= 100)
-    {
+    if (regs[REG_SPEED] >= 900 || regs[REG_SPEED] <= 100) {
       iBarD = -iBarD;
     }
 
     screen.MenuUpdate();
   }
 
-  if (taskSecond.Tick(ulTicks)){
+  if (taskSecond.Tick(ulTicks)) {
   }
   
 } /*---( end loop )---*/
@@ -81,24 +82,35 @@ void loop() {
 
 
 /*---( getInput: Updates the various inputs to update variables )---*/
-void getInput() {
+void getInput(bool raw) {
   int AinValue; // Temporary value from the sensor
 
-  // Read the value from the sensor
-  AinValue = analogRead(AinBatI);      
-  // Map it to the range of the analog variable, first integer then with one decimal
-  fBatI = map(AinValue, 0, 1023, -2000, 2000);
-  fBatI = fBatI / 10;
-  
-  // read the value from the sensor:
-  AinValue = analogRead(AinBatV);      
-  // Map it to the range of the analog variable, first integer then with one decimal
-  fBatV = map(AinValue, 0, 1023, 0, 500);  
-  fBatV = fBatV / 10;
+  // Read the keyboard voltage, 0-5000 mV
+  AinValue = analogRead(AinKeys);
+  if (raw) {
+    regs[REG_KEYS] = AinValue;
+  }
+  else {
+    regs[REG_KEYS] = map(AinValue, 0, 1023, 0, 5000);
+  }
 
-  // Print out keyboard voltage
-  AinValue = analogRead(AinKeys);      
-  fKeyV = map(AinValue, 0, 1023, 5000, 0);
+  // Read the value from the sensor, +- 200.0 A
+  AinValue = analogRead(AinBatI);      
+  if (raw) {
+    regs[REG_BAT_I] = AinValue;
+  }
+  else {
+    regs[REG_BAT_I] = map(AinValue, 0, 1023, -2000, 2000);
+  }
+  
+  // read the value from the sensor, 0-50.0 V
+  AinValue = analogRead(AinBatV);      
+  if (raw) {
+    regs[REG_BAT_V] = AinValue;  
+  }
+  else {
+    regs[REG_BAT_V] = map(AinValue, 0, 1023, 0, 500);  
+  }
 } /*---( end getInput )---*/
 
 
