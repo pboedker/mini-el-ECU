@@ -1,6 +1,8 @@
 // Globals.cpp
 #include "Globals.h"
 
+char version[] = "v1.2.1";
+
 // Declaring pin numbers for IO
 // Beware, A0-A5 is 14-19 !
 //byte D0_var =         0; // - Reserved for Serial Rx?

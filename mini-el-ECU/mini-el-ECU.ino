@@ -49,11 +49,9 @@ void setup() {
   // Show splash screen and then clear the screen
   screen.MenuSelect(0);
 
-  iBarD = 30;
-  regs[REG_BAT_I] = 1723;
-  regs[REG_BAT_V] = 374;
-  regs[REG_SPEED] = 143;
-  regs[REG_SOC] = 636;
+  iBarD = 50;
+  regs[REG_SPEED] = 200;
+  regs[REG_SOC] = 0;
 } /*---( end setup )---*/
 
 
@@ -63,14 +61,8 @@ void loop() {
   ulTicks = millis();
 
   if (taskScreen.Tick(ulTicks)) {
-    getInput(false);
+    getInput(true);
     
-    // Do a bargraph...
-    regs[REG_SPEED] += iBarD;
-    if (regs[REG_SPEED] >= 900 || regs[REG_SPEED] <= 100) {
-      iBarD = -iBarD;
-    }
-
     screen.MenuUpdate();
   }
 
@@ -111,6 +103,17 @@ void getInput(bool raw) {
   else {
     regs[REG_BAT_V] = map(AinValue, 0, 1023, 0, 500);  
   }
+
+  regs[REG_SPEED] += iBarD;
+  if (regs[REG_SPEED] >= 500 || regs[REG_SPEED] <= 0) {
+    iBarD = -iBarD;
+  }
+
+  regs[REG_SOC] = 456;
+//  regs[REG_SOC] += 50;
+//  if (regs[REG_SOC] >= 1000) {
+//    regs[REG_SOC] = 0;
+//  }
 } /*---( end getInput )---*/
 
 

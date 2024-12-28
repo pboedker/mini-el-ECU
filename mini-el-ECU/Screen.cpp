@@ -137,7 +137,7 @@ void Screen::MenuUpdate() {
     case 0:
       if (menuInit) {
         DisplayMessage("mini-el Control Unit", 0, 1);
-        DisplayMessage("v1.2.0", 7, 2);
+        DisplayMessage(version, 7, 2);
       }
       if (millis() >= (menuTicksAtChange + 3000)) {
         MenuSelect(1);
@@ -170,7 +170,11 @@ void Screen::MenuUpdate() {
         DisplayMessage("\"N\"", 0, 2);
       }
 
+      dtostrf(regs[REG_KEYS], 4, 0, myBuffer);
+      DisplayMessage(myBuffer, 5, 2);
+
       lcd->setCursor(0, 3);
+      regs[REG_SOC] = map(regs[REG_SOC], 110, 1000, 0, 1000);
       Bargraph(regs[REG_SOC] / 10);
       break;
       

@@ -4,6 +4,8 @@
 
 #include <arduino.h>
 
+extern char version[];
+
 // Declaring pin numbers for IO
 // Beware, A0-A5 is 14-19 !
 //extern byte D0_var =         0; // - Reserved for Serial Rx?
