@@ -30,6 +30,10 @@ Task taskSecond(1000);
 
 // setup: Runs once.
 void setup() {
+  // Reset digital pins used for relays
+  digitalWrite(DoutWasher, RELAY_OFF);
+  digitalWrite(DoutFan, RELAY_OFF);
+  
   Serial.begin(9600); // We will receive characters
 
   // Set the lcd size
@@ -40,6 +44,10 @@ void setup() {
   pinMode(AinBatV, INPUT);
   pinMode(AinBatI, INPUT);
 
+  // Set digital pins used
+  pinMode(DoutWasher, OUTPUT);
+  pinMode(DoutFan, OUTPUT);
+  
   // Show splash screen and then clear the screen
   screen.MenuSelect(0);
 

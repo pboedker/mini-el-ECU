@@ -153,6 +153,43 @@ void Screen::MenuUpdate() {
 
 //      dtostrf(regs[REG_SPEED] / 10, 3, 0, myBuffer);
 //      DisplayMessage(myBuffer, 0, 1);
+
+      lcd->setCursor(0, 1);
+      if (regs[REG_KEYS] < 127) {
+        lcd->print("Trip      ");
+      }
+      else if (regs[REG_KEYS] < 242) {
+        lcd->print("Lights Off");        
+      }
+      else if (regs[REG_KEYS] < 333) {
+        lcd->print("Heat Low  "); 
+      }
+      else if (regs[REG_KEYS] < 398) {
+        lcd->print("Heat High ");        
+      }
+      else if (regs[REG_KEYS] < 470) {
+        lcd->print("Wiper     ");        
+      }
+      else if (regs[REG_KEYS] < 568) {
+        lcd->print("Wiper Off ");        
+        digitalWrite(DoutWasher, RELAY_OFF);
+      }
+      else if (regs[REG_KEYS] < 649) {
+        lcd->print("Fan       ");
+        digitalWrite(DoutFan, RELAY_ON);
+      }
+      else if (regs[REG_KEYS] < 690) {
+        lcd->print("Washer    ");        
+        digitalWrite(DoutWasher, RELAY_ON);
+      }
+      else if (regs[REG_KEYS] < 738) {
+        lcd->print("Fan Off   ");        
+        digitalWrite(DoutFan, RELAY_OFF);
+      }
+      else {
+        lcd->print("No key      ");        
+        digitalWrite(DoutFan, RELAY_OFF);
+      }
       
       dtostrf((float)regs[REG_BAT_I] / 10, 6, 1, myBuffer);
       DisplayMessage(myBuffer, 12, 1);
@@ -174,7 +211,7 @@ void Screen::MenuUpdate() {
       }
 
       dtostrf(regs[REG_KEYS], 4, 0, myBuffer);
-      DisplayMessage(myBuffer, 5, 2);
+      DisplayMessage(myBuffer, 3, 2);
 
       lcd->setCursor(0, 3);
       value = map(regs[REG_SOC], 110, 1000, 0, 1000);
