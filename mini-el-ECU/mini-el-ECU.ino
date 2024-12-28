@@ -26,12 +26,6 @@ Task taskSecond(1000);
 
 
 /*-----( Declare Variables )-----*/
-int iBarD;
-
-//float fKeyV; // The voltage from the keyboard
-//float fBatV; // The voltage of the battery
-//float fBatI; // The current from the battery
-
 
 
 // setup: Runs once.
@@ -49,8 +43,7 @@ void setup() {
   // Show splash screen and then clear the screen
   screen.MenuSelect(0);
 
-  iBarD = 50;
-  regs[REG_SPEED] = 200;
+  regs[REG_SPEED] = 0;
   regs[REG_SOC] = 0;
 } /*---( end setup )---*/
 
@@ -67,6 +60,15 @@ void loop() {
   }
 
   if (taskSecond.Tick(ulTicks)) {
+    regs[REG_SPEED] += 25;
+    if (regs[REG_SPEED] > 500) {
+      regs[REG_SPEED] = 25;
+    }
+
+    regs[REG_SOC] += 50;
+    if (regs[REG_SOC] > 1000) {
+      regs[REG_SOC] = 100;
+    }
   }
   
 } /*---( end loop )---*/
@@ -103,17 +105,6 @@ void getInput(bool raw) {
   else {
     regs[REG_BAT_V] = map(AinValue, 0, 1023, 0, 500);  
   }
-
-  regs[REG_SPEED] += iBarD;
-  if (regs[REG_SPEED] >= 500 || regs[REG_SPEED] <= 0) {
-    iBarD = -iBarD;
-  }
-
-  regs[REG_SOC] = 456;
-//  regs[REG_SOC] += 50;
-//  if (regs[REG_SOC] >= 1000) {
-//    regs[REG_SOC] = 0;
-//  }
 } /*---( end getInput )---*/
 
 

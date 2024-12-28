@@ -130,6 +130,7 @@ void Screen::MenuSelect(byte menu) {
 
 void Screen::MenuUpdate() {
   char myBuffer[10]; // Buffer to hold the formatted string
+  int value;
 
   // Change, so that each case has an init part and an update part.
   switch (menuActive)
@@ -146,10 +147,12 @@ void Screen::MenuUpdate() {
       
     case 1:
       lcd->setCursor(0, 0);
-      Bargraph(regs[REG_SPEED] / 10);
+      value = map(regs[REG_SPEED], 55, 500, 0, 1000);
+      value = max(0, value);
+      Bargraph(value / 10);
 
-      dtostrf(regs[REG_SPEED] / 10, 3, 0, myBuffer);
-      DisplayMessage(myBuffer, 0, 1);
+//      dtostrf(regs[REG_SPEED] / 10, 3, 0, myBuffer);
+//      DisplayMessage(myBuffer, 0, 1);
       
       dtostrf((float)regs[REG_BAT_I] / 10, 6, 1, myBuffer);
       DisplayMessage(myBuffer, 12, 1);
@@ -174,8 +177,9 @@ void Screen::MenuUpdate() {
       DisplayMessage(myBuffer, 5, 2);
 
       lcd->setCursor(0, 3);
-      regs[REG_SOC] = map(regs[REG_SOC], 110, 1000, 0, 1000);
-      Bargraph(regs[REG_SOC] / 10);
+      value = map(regs[REG_SOC], 110, 1000, 0, 1000);
+      value = max(0, value);
+      Bargraph(value / 10);
       break;
       
     case 2:
