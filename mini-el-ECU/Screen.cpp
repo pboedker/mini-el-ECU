@@ -188,7 +188,6 @@ void Screen::MenuUpdate() {
       }
       else {
         lcd->print("No key      ");        
-        digitalWrite(DoutFan, RELAY_OFF);
       }
       
       dtostrf((float)regs[REG_BAT_I] / 10, 6, 1, myBuffer);
