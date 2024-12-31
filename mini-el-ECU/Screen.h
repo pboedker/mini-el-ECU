@@ -11,6 +11,7 @@ class Screen {
     unsigned long menuTicksAtChange;
     byte menuActive;
     bool menuInit;
+    bool keyIdle;
     int keyIdleLow;
     
   public:

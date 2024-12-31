@@ -17,11 +17,11 @@ extern char version[];
 //#define D6_var 6 // Not used (also PWM)
 #define DinDrive 7 // Gear selector, Drive
 #define DinReverse 8 // Gear selector, Reverse
-//#define D9_var 9 // Not used (PWM)
-#define DoutWiper 10 // Not used (also PWM)
-#define DoutWasher 11 // Windscreen wiper (also PWM)
-#define DoutFan 12 // Windscreen washer
-#define D13_var 13 // Windscreen fan (LED)
+#define DoutBeam 9 // Beam (PWM)
+#define DoutWiper 10 // Windscreen wiper (also PWM)
+#define DoutWasher 11 // Windscreen washer (also PWM)
+#define DoutFan 12 // Windscreen fan
+#define D13_var 13 // Not used (LED)
 //#define Ain0_var =      A0; // - Not used
 #define AinKeys A1 // Input pin for the keyboard encoding
 #define AinBatI A2 // Input pin for the battery current

@@ -31,6 +31,8 @@ Task taskSecond(1000);
 // setup: Runs once.
 void setup() {
   // Reset digital pins used for relays
+  digitalWrite(DoutBeam, RELAY_OFF);
+  digitalWrite(DoutWiper, RELAY_OFF);
   digitalWrite(DoutWasher, RELAY_OFF);
   digitalWrite(DoutFan, RELAY_OFF);
   
@@ -45,6 +47,8 @@ void setup() {
   pinMode(AinBatI, INPUT);
 
   // Set digital pins used
+  pinMode(DoutBeam, OUTPUT);
+  pinMode(DoutWiper, OUTPUT);
   pinMode(DoutWasher, OUTPUT);
   pinMode(DoutFan, OUTPUT);
   

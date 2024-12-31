@@ -86,7 +86,7 @@ void Screen::Init(byte cols, byte rows) {
   lcd->backlight();
   lcd->clear();
 
-  keyIdleLow = 999;
+  keyIdleLow = 770;
 }
 
 // Writes a bargraph of 0-100, divided into 20 chars
@@ -156,45 +156,50 @@ void Screen::MenuUpdate() {
 //      dtostrf(regs[REG_SPEED] / 10, 3, 0, myBuffer);
 //      DisplayMessage(myBuffer, 0, 1);
 
+      value = 770 - keyIdleLow;
       lcd->setCursor(0, 1);
-      if (regs[REG_KEYS] < 127) {
+      if (regs[REG_KEYS] < (127 - value / 5)) {
         lcd->print("Trip      ");
       }
-      else if (regs[REG_KEYS] < 242) {
+      else if (regs[REG_KEYS] < (242 - value / 4)) {
         lcd->print("Lights Off");        
       }
-      else if (regs[REG_KEYS] < 333) {
+      else if (regs[REG_KEYS] < (333 - value / 3)) {
         lcd->print("Heat Low  "); 
       }
-      else if (regs[REG_KEYS] < 398) {
+      else if (regs[REG_KEYS] < (398 - value / 2)) {
         lcd->print("Heat High ");        
       }
-      else if (regs[REG_KEYS] < 470) {
+      else if (regs[REG_KEYS] < (470 - value / 2)) {
         lcd->print("Wiper     ");        
         digitalWrite(DoutWiper, RELAY_ON);
       }
-      else if (regs[REG_KEYS] < 568) {
+      else if (regs[REG_KEYS] < (568 - value)) {
         lcd->print("Wiper Off ");        
         digitalWrite(DoutWiper, RELAY_OFF);
       }
-      else if (regs[REG_KEYS] < 649) {
+      else if (regs[REG_KEYS] < (649 - value)) {
         lcd->print("Fan       ");
         digitalWrite(DoutFan, RELAY_ON);
       }
-      else if (regs[REG_KEYS] < 690) {
+      else if (regs[REG_KEYS] < (690 - value)) {
         lcd->print("Washer    ");        
         digitalWrite(DoutWasher, RELAY_ON);
       }
-      else if (regs[REG_KEYS] < 738) {
+      else if (regs[REG_KEYS] < (738 - value)) {
         lcd->print("Fan Off   ");        
         digitalWrite(DoutFan, RELAY_OFF);
       }
       else {
+        keyIdle = true;
         lcd->print("No key      ");
         digitalWrite(DoutWasher, RELAY_OFF);
 
-        keyIdleLow = regs[REG_KEYS];
-
+//        if (keyIdleLoad <= 0) {
+          keyIdleLow = regs[REG_KEYS];  
+//        }
+        
+        
 //        if (regs[REG_KEYS] < keyIdleLow) {
 //          keyIdleLow = keyIdleLow + regs[REG_KEYS];
 //          keyIdleLow = keyIdleLow / 2;
@@ -212,7 +217,7 @@ void Screen::MenuUpdate() {
       DisplayMessage(myBuffer, 13, 2);
       lcd->print(" V");
 
-      regs[REG_GEAR] = regs[REG_SPEED] / 250;
+      regs[REG_GEAR] = regs[REG_SPEED] / 200;
       if (regs[REG_GEAR] == 1) {
         DisplayMessage("\"D\"", 0, 2);
       }
@@ -227,6 +232,8 @@ void Screen::MenuUpdate() {
       DisplayMessage(myBuffer, 4, 2);
       dtostrf(keyIdleLow, 3, 0, myBuffer);
       DisplayMessage(myBuffer, 8, 2);
+      dtostrf(value, 2, 0, myBuffer);
+      DisplayMessage(myBuffer, 11, 2);
 
       lcd->setCursor(0, 3);
       value = map(regs[REG_SOC], 110, 1000, 0, 1000);
