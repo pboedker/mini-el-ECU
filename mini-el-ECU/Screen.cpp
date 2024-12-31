@@ -85,6 +85,8 @@ void Screen::Init(byte cols, byte rows) {
   // Turn on backlight and clear the screen
   lcd->backlight();
   lcd->clear();
+
+  keyIdleLow = 999;
 }
 
 // Writes a bargraph of 0-100, divided into 20 chars
@@ -169,10 +171,11 @@ void Screen::MenuUpdate() {
       }
       else if (regs[REG_KEYS] < 470) {
         lcd->print("Wiper     ");        
+        digitalWrite(DoutWiper, RELAY_ON);
       }
       else if (regs[REG_KEYS] < 568) {
         lcd->print("Wiper Off ");        
-        digitalWrite(DoutWasher, RELAY_OFF);
+        digitalWrite(DoutWiper, RELAY_OFF);
       }
       else if (regs[REG_KEYS] < 649) {
         lcd->print("Fan       ");
@@ -187,7 +190,18 @@ void Screen::MenuUpdate() {
         digitalWrite(DoutFan, RELAY_OFF);
       }
       else {
-        lcd->print("No key      ");        
+        lcd->print("No key      ");
+        digitalWrite(DoutWasher, RELAY_OFF);
+
+        keyIdleLow = regs[REG_KEYS];
+
+//        if (regs[REG_KEYS] < keyIdleLow) {
+//          keyIdleLow = keyIdleLow + regs[REG_KEYS];
+//          keyIdleLow = keyIdleLow / 2;
+//        }
+//        else {
+//          keyIdleLow = regs[REG_KEYS];
+//        }
       }
       
       dtostrf((float)regs[REG_BAT_I] / 10, 6, 1, myBuffer);
@@ -209,8 +223,10 @@ void Screen::MenuUpdate() {
         DisplayMessage("\"N\"", 0, 2);
       }
 
-      dtostrf(regs[REG_KEYS], 4, 0, myBuffer);
-      DisplayMessage(myBuffer, 3, 2);
+      dtostrf(regs[REG_KEYS], 3, 0, myBuffer);
+      DisplayMessage(myBuffer, 4, 2);
+      dtostrf(keyIdleLow, 3, 0, myBuffer);
+      DisplayMessage(myBuffer, 8, 2);
 
       lcd->setCursor(0, 3);
       value = map(regs[REG_SOC], 110, 1000, 0, 1000);

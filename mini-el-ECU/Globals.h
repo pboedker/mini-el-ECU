@@ -11,17 +11,17 @@ extern char version[];
 //#define D0_var 0 // - Reserved for Serial Rx?
 //#define D1_var 1 // - Reserved for Serial Tx?
 //#define DinSpeed 2 // Speed sensor (INT0)
-//#define D3_var 3 // Not used (INT1, PWM)
+//#define D3_var 3 // Not used (INT1, also PWM)
 //#define DinBeam 4 // Beam (stalk)
 //#define DinHead 5 // Head light (also PWM)
-//#define D6_var 6 // Not used (PWM)
+//#define D6_var 6 // Not used (also PWM)
 #define DinDrive 7 // Gear selector, Drive
 #define DinReverse 8 // Gear selector, Reverse
 //#define D9_var 9 // Not used (PWM)
-//#define D10_var 10 // Not used (PWM)
-#define DoutWiper 11 // Windscreen wiper (also PWM)
-#define DoutWasher 12 // Windscreen washer
-#define DoutFan 13 // Windscreen fan (LED)
+#define DoutWiper 10 // Not used (also PWM)
+#define DoutWasher 11 // Windscreen wiper (also PWM)
+#define DoutFan 12 // Windscreen washer
+#define D13_var 13 // Windscreen fan (LED)
 //#define Ain0_var =      A0; // - Not used
 #define AinKeys A1 // Input pin for the keyboard encoding
 #define AinBatI A2 // Input pin for the battery current
@@ -31,9 +31,9 @@ extern char version[];
 
 // Reserving relay functions
 // 1: High Beam
-// 2: Fan
-// 3: Wiper
-// 4: Washer
+// 2: Wiper
+// 3: Washer
+// 4: Fan
 // 5: 
 // 6: 
 // 7: 
