@@ -11,8 +11,6 @@ class Screen {
     unsigned long menuTicksAtChange;
     byte menuActive;
     bool menuInit;
-    bool keyIdle;
-    int keyIdleLow;
     
   public:
     Screen(LiquidCrystal_I2C* myLCD);

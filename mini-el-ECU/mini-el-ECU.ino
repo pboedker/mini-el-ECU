@@ -58,8 +58,8 @@ void setup() {
   // Show splash screen and then clear the screen
   screen.MenuSelect(0);
 
-  regs[REG_SPEED] = 0;
-  regs[REG_SOC] = 0;
+  regs[REG_SPEED] = 100;
+  regs[REG_SOC] = 200;
 } /*---( end setup )---*/
 
 
@@ -68,6 +68,9 @@ void setup() {
 void loop() {
   ulTicks = millis();
 
+  if (task100.Tick(ulTicks)) {
+  }
+
   if (taskScreen.Tick(ulTicks)) {
     getInput(true);
     
@@ -75,15 +78,15 @@ void loop() {
   }
 
   if (taskSecond.Tick(ulTicks)) {
-    regs[REG_SPEED] += 25;
-    if (regs[REG_SPEED] > 500) {
-      regs[REG_SPEED] = 25;
-    }
+//    regs[REG_SPEED] += 25;
+//    if (regs[REG_SPEED] > 500) {
+//      regs[REG_SPEED] = 25;
+//    }
 
-    regs[REG_SOC] += 50;
-    if (regs[REG_SOC] > 1000) {
-      regs[REG_SOC] = 100;
-    }
+//    regs[REG_SOC] += 50;
+//    if (regs[REG_SOC] > 1000) {
+//      regs[REG_SOC] = 100;
+//    }
   }
   
 } /*---( end loop )---*/

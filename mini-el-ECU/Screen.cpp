@@ -85,8 +85,6 @@ void Screen::Init(byte cols, byte rows) {
   // Turn on backlight and clear the screen
   lcd->backlight();
   lcd->clear();
-
-  keyIdleLow = 770;
 }
 
 // Writes a bargraph of 0-100, divided into 20 chars
@@ -156,42 +154,43 @@ void Screen::MenuUpdate() {
 //      dtostrf(regs[REG_SPEED] / 10, 3, 0, myBuffer);
 //      DisplayMessage(myBuffer, 0, 1);
 
-      value = 770 - keyIdleLow;
       lcd->setCursor(0, 1);
-      if (regs[REG_KEYS] < (127 - value / 5)) {
+      if (regs[REG_KEYS] < 127) {
         lcd->print("Trip      ");
       }
-      else if (regs[REG_KEYS] < (242 - value / 4)) {
+      else if (regs[REG_KEYS] < 242) {
         lcd->print("Lights Off");        
       }
-      else if (regs[REG_KEYS] < (333 - value / 3)) {
-        lcd->print("Heat Low  "); 
+      else if (regs[REG_KEYS] < 333) {
+        lcd->print("Heat Low  ");
+        digitalWrite(DoutFan, RELAY_ON);
+        digitalWrite(DoutHeatLow, RELAY_ON);
       }
-      else if (regs[REG_KEYS] < (398 - value / 2)) {
+      else if (regs[REG_KEYS] < 398) {
         lcd->print("Heat High ");        
       }
-      else if (regs[REG_KEYS] < (470 - value / 2)) {
+      else if (regs[REG_KEYS] < 470) {
         lcd->print("Wiper     ");        
         digitalWrite(DoutWiper, RELAY_ON);
       }
-      else if (regs[REG_KEYS] < (568 - value)) {
+      else if (regs[REG_KEYS] < 568) {
         lcd->print("Wiper Off ");        
         digitalWrite(DoutWiper, RELAY_OFF);
       }
-      else if (regs[REG_KEYS] < (649 - value)) {
+      else if (regs[REG_KEYS] < 649) {
         lcd->print("Fan       ");
         digitalWrite(DoutFan, RELAY_ON);
       }
-      else if (regs[REG_KEYS] < (690 - value)) {
+      else if (regs[REG_KEYS] < 690) {
         lcd->print("Washer    ");        
         digitalWrite(DoutWasher, RELAY_ON);
       }
-      else if (regs[REG_KEYS] < (738 - value)) {
+      else if (regs[REG_KEYS] < 738) {
         lcd->print("Fan Off   ");        
         digitalWrite(DoutFan, RELAY_OFF);
+        digitalWrite(DoutHeatLow, RELAY_OFF);
       }
       else {
-        keyIdle = true;
         lcd->print("No key      ");
         digitalWrite(DoutWasher, RELAY_OFF);
       }
@@ -217,10 +216,38 @@ void Screen::MenuUpdate() {
 
       dtostrf(regs[REG_KEYS], 3, 0, myBuffer);
       DisplayMessage(myBuffer, 4, 2);
-      dtostrf(keyIdleLow, 3, 0, myBuffer);
-      DisplayMessage(myBuffer, 8, 2);
-      dtostrf(value, 2, 0, myBuffer);
-      DisplayMessage(myBuffer, 11, 2);
+
+      lcd->setCursor(8, 2);
+      if (digitalRead(DoutHeatLow) == RELAY_ON){
+        lcd->print("1");
+      }
+      else {
+        lcd->print("0");
+      }
+      if (digitalRead(DoutFan) == RELAY_ON){
+        lcd->print("1");
+      }
+      else {
+        lcd->print("0");
+      }
+      if (digitalRead(DoutWasher) == RELAY_ON){
+        lcd->print("1");
+      }
+      else {
+        lcd->print("0");
+      }
+      if (digitalRead(DoutWiper) == RELAY_ON){
+        lcd->print("1");
+      }
+      else {
+        lcd->print("0");
+      }
+      if (digitalRead(DoutBeam) == RELAY_ON){
+        lcd->print("1");
+      }
+      else {
+        lcd->print("0");
+      }
 
       lcd->setCursor(0, 3);
       value = map(regs[REG_SOC], 110, 1000, 0, 1000);
