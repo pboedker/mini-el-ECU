@@ -21,6 +21,7 @@ unsigned long ulTicks;
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
 Screen screen(&lcd);
 //Task task10(10);
+Task task100(100);
 Task taskScreen(500);
 Task taskSecond(1000);
 
@@ -35,6 +36,7 @@ void setup() {
   digitalWrite(DoutWiper, RELAY_OFF);
   digitalWrite(DoutWasher, RELAY_OFF);
   digitalWrite(DoutFan, RELAY_OFF);
+  digitalWrite(DoutHeatLow, RELAY_OFF);
   
   Serial.begin(9600); // We will receive characters
 
@@ -51,6 +53,7 @@ void setup() {
   pinMode(DoutWiper, OUTPUT);
   pinMode(DoutWasher, OUTPUT);
   pinMode(DoutFan, OUTPUT);
+  pinMode(DoutHeatLow, OUTPUT);
   
   // Show splash screen and then clear the screen
   screen.MenuSelect(0);

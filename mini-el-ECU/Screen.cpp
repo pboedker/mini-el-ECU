@@ -194,19 +194,6 @@ void Screen::MenuUpdate() {
         keyIdle = true;
         lcd->print("No key      ");
         digitalWrite(DoutWasher, RELAY_OFF);
-
-//        if (keyIdleLoad <= 0) {
-          keyIdleLow = regs[REG_KEYS];  
-//        }
-        
-        
-//        if (regs[REG_KEYS] < keyIdleLow) {
-//          keyIdleLow = keyIdleLow + regs[REG_KEYS];
-//          keyIdleLow = keyIdleLow / 2;
-//        }
-//        else {
-//          keyIdleLow = regs[REG_KEYS];
-//        }
       }
       
       dtostrf((float)regs[REG_BAT_I] / 10, 6, 1, myBuffer);
