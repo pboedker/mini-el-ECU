@@ -41,13 +41,21 @@ extern char version[];
 #define RELAY_ON 0
 #define RELAY_OFF 1
 
-extern int regs[8];
+// int registers that can be read/written globally
 #define REG_SPEED 0
 #define REG_SOC 1
 #define REG_KEYS 2
 #define REG_BAT_I 3
 #define REG_BAT_V 4
 #define REG_GEAR 5
-#define REG_UPPER 7
+// ..
+#define REG_ODO_HIGH 10
+#define REG ODO_LOW 11
+#define REG_TRIP_HIGH 12
+#define REG TRIP_LOW 13
+#define REG RPM_PER_KM 14
+#define REG_ELEMENTS 16
+extern int regs[REG_ELEMENTS];
 
 #endif
+
