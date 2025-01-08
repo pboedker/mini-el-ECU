@@ -1,10 +1,9 @@
 /* mini-el Control Unit */
 
-// TODO
-// Version number struct
 
 // Common libraries
 #include <Wire.h>
+#include <EEPROM.h>
 #include <LiquidCrystal_I2C.h>
 
 // Local libraries.
@@ -14,19 +13,18 @@
 
 
 /*-----( Declare Constants )-----*/
-unsigned long ulTicks; 
 
 
 /*-----( Declare objects )-----*/
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
 Screen screen(&lcd);
-//Task task10(10);
-Task task100(100);
+Task task20(20);
 Task taskScreen(500);
 Task taskSecond(1000);
 
 
 /*-----( Declare Variables )-----*/
+unsigned long ulTicks; 
 
 
 // setup: Runs once.
@@ -68,7 +66,7 @@ void setup() {
 void loop() {
   ulTicks = millis();
 
-  if (task100.Tick(ulTicks)) {
+  if (task20.Tick(ulTicks)) {
   }
 
   if (taskScreen.Tick(ulTicks)) {
