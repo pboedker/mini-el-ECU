@@ -41,6 +41,13 @@ extern char version[];
 #define RELAY_ON 0
 #define RELAY_OFF 1
 
+
+// EEPROM registers (int)
+#define EEPROM_ODO_HIGH 0
+#define EEPROM_ODO_LOW 1
+#define EEPROM_TRIP_HIGH 2
+#define EEPROM_TRIP_LOW 3
+
 // int registers that can be read/written globally
 #define REG_SPEED 0
 #define REG_SOC 1
@@ -50,10 +57,11 @@ extern char version[];
 #define REG_GEAR 5
 // ..
 #define REG_ODO_HIGH 10
-#define REG ODO_LOW 11
+#define REG_ODO_LOW 11
 #define REG_TRIP_HIGH 12
-#define REG TRIP_LOW 13
-#define REG RPM_PER_KM 14
+#define REG_TRIP_LOW 13
+#define REG_RPM_PER_KM 14
+// ..
 #define REG_ELEMENTS 16
 extern int regs[REG_ELEMENTS];
 

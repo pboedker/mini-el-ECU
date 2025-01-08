@@ -58,6 +58,16 @@ void setup() {
 
   regs[REG_SPEED] = 100;
   regs[REG_SOC] = 200;
+
+  EEPROM.get(EEPROM_ODO_HIGH, regs[REG_ODO_HIGH]);
+  EEPROM.get(EEPROM_ODO_LOW, regs[REG_ODO_LOW]);
+  EEPROM.get(EEPROM_TRIP_HIGH, regs[REG_TRIP_HIGH]);
+  EEPROM.get(EEPROM_TRIP_LOW, regs[REG_TRIP_LOW]);
+
+  regs[REG_ODO_HIGH] = 0;
+  regs[REG_ODO_LOW] = 0;
+  regs[REG_TRIP_HIGH] = 0;
+  regs[REG_TRIP_LOW] = 2317;
 } /*---( end setup )---*/
 
 
@@ -76,6 +86,16 @@ void loop() {
   }
 
   if (taskSecond.Tick(ulTicks)) {
+    regs[REG_ODO_HIGH] = regs[REG_ODO_LOW];
+    regs[REG_ODO_LOW] = regs[REG_TRIP_HIGH];
+    regs[REG_TRIP_HIGH] = regs[REG_TRIP_LOW];
+    regs[REG_TRIP_LOW] = regs[REG_ODO_HIGH];
+    
+    EEPROM.put(EEPROM_ODO_HIGH, regs[REG_ODO_HIGH]);
+    EEPROM.put(EEPROM_ODO_LOW, regs[REG_ODO_LOW]);
+    EEPROM.put(EEPROM_TRIP_HIGH, regs[REG_TRIP_HIGH]);
+    EEPROM.put(EEPROM_TRIP_LOW, regs[REG_TRIP_LOW]);
+
 //    regs[REG_SPEED] += 25;
 //    if (regs[REG_SPEED] > 500) {
 //      regs[REG_SPEED] = 25;
